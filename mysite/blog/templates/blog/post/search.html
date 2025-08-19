@@ -1,0 +1,63 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+  {% if query %}
+    <h1>Posts containing "{{ query }}"</h1>
+    <h3>
+      {% with results.count as total_results %}
+        Found {{ total_results }} result{{ total_results|pluralize }}
+        {% if search_type == 'weighted' %}
+          using weighted search
+        {% elif search_type == 'trigram' %}
+          using trigram similarity
+        {% elif search_type == 'simple' %}
+          using simple search
+        {% endif %}
+      {% endwith %}
+    </h3>
+    {% for post in results %}
+      <h4>
+        <a href="{{ post.get_absolute_url }}">
+          {{ post.title }}
+        </a>
+        {% if post.rank %}
+          <small class="text-muted">(Rank: {{ post.rank|floatformat:3 }})</small>
+        {% elif post.similarity %}
+          <small class="text-muted">(Similarity: {{ post.similarity|floatformat:3 }})</small>
+        {% endif %}
+      </h4>
+      {{ post.body|markdown|truncatewords_html:12 }}
+      <hr>
+    {% empty %}
+      <p>There are no results for your query.</p>
+      {% if search_type == 'weighted' %}
+        <p><em>Try using "Trigram Similarity" search for better results with typos.</em></p>
+      {% endif %}
+    {% endfor %}
+    <p><a href="{% url "blog:post_search" %}">Search again</a></p>
+  {% else %}
+    <h1>Search for posts</h1>
+    <div class="alert alert-info">
+      <h4>Search Types:</h4>
+      <ul>
+        <li><strong>Weighted Search:</strong> Prioritizes title matches over content matches</li>
+        <li><strong>Simple Search:</strong> Basic full-text search across title and content</li>
+        <li><strong>Trigram Similarity:</strong> Good for finding results even with typos</li>
+      </ul>
+    </div>
+    <form method="get">
+      <div class="form-group">
+        {{ form.query.label_tag }}
+        {{ form.query }}
+      </div>
+      <div class="form-group">
+        {{ form.search_type.label_tag }}
+        {{ form.search_type }}
+      </div>
+      <input type="submit" value="Search" class="btn btn-primary">
+    </form>
+  {% endif %}
+{% endblock %}

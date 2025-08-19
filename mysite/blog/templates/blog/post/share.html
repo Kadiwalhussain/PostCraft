@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+    {% if sent %}
+        <h1>E-mail successfully sent</h1>
+        <p>"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+        <p><a href="{{ post.get_absolute_url }}">Back to post</a></p>
+    {% else %}
+        <h1>Share "{{ post.title }}" by e-mail</h1>
+        
+        {% if error_message %}
+            <div class="alert alert-danger">
+                <strong>Error:</strong> {{ error_message }}
+                <p><em>Note: Email functionality requires proper SMTP configuration. For development, you can use console backend or check server logs.</em></p>
+            </div>
+        {% endif %}
+        
+        <form method="post">
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                {{ form.to.label_tag }}
+                {{ form.to }}
+            </div>
+            <div class="form-group">
+                {{ form.comments.label_tag }}
+                {{ form.comments }}
+            </div>
+            {% csrf_token %}
+            <input type="submit" value="Send e-mail" class="btn btn-primary">
+            <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    {% endif %}
+{% endblock %}
