@@ -4,6 +4,12 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
+  {% if error_message %}
+    <div class="alert alert-danger">
+      {{ error_message }}
+    </div>
+  {% endif %}
+  
   {% if query %}
     <h1>Posts containing "{{ query }}"</h1>
     <h3>
