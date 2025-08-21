@@ -11,10 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u9l256+*(x19r&&&kf8tx)jvg4fcw+$0w6gzlznk2@-(8yi5^9'
+import os
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-in-production-u9l256+*x19kf8tx')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
@@ -65,17 +66,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database - use environment variables with fallbacks
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
-        'USER': 'blog',
-        'PASSWORD': 'blogpassword123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME', 'blog'),
+        'USER': os.environ.get('DB_USER', 'blog'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'blogpassword123'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -119,28 +118,69 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------------------------------
-# Email server configuration
+# Email server configuration - use environment variables
 # ------------------------------------------------
 
 # Choose ONE of the following email backends:
 
 # 1. REAL EMAIL SENDING (Fixed Gmail SMTP) - Uncomment to send real emails
-EMAIL_BACKEND = 'blog.email_backend.FixedSMTPBackend'
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'blog.email_backend.FixedSMTPBackend')
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'colabhussain@gmail.com'
-EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'  # Use App Password, not regular password
-DEFAULT_FROM_EMAIL = 'colabhussain@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'colabhussain@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'oayyyxkslauhqhkz')  # Use environment variable in production
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 EMAIL_TIMEOUT = 30
 
-# 2. STANDARD SMTP (if custom backend doesn't work)
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# 3. CONSOLE EMAIL (Development) - Shows emails in terminal
+# For development, you can use console backend:
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# 4. FILE EMAIL (Save to files) - Alternative for testing
-# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-# EMAIL_FILE_PATH = '/tmp/app-messages'
+# Static files configuration
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO' if DEBUG else 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple' if DEBUG else 'verbose',
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'errors.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO' if DEBUG else 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO' if DEBUG else 'WARNING',
+            'propagate': False,
+        },
+        'blog': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO' if DEBUG else 'WARNING',
+            'propagate': False,
+        },
+    },
+}

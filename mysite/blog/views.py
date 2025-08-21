@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.conf import settings
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm
 from taggit.models import Tag
@@ -73,7 +74,7 @@ def post_share(request, post_id):
                 send_mail(
                     subject, 
                     message, 
-                    'colabhussain@gmail.com',  # Use the configured email
+                    settings.DEFAULT_FROM_EMAIL,  # Use configured email from settings
                     [cd['to']],
                     fail_silently=False
                 )
@@ -120,6 +121,7 @@ def post_search(request):
     query = None
     results = []
     search_type = 'weighted'
+    error_message = None
     
     if 'query' in request.GET:
         form = SearchForm(request.GET)
@@ -127,38 +129,45 @@ def post_search(request):
             query = form.cleaned_data['query']
             search_type = form.cleaned_data.get('search_type', 'weighted')
             
-            if search_type == 'simple':
-                # Simple search against title and body
-                results = Post.published.annotate(
-                    search=SearchVector('title', 'body'),
-                ).filter(search=query)
-                
-            elif search_type == 'trigram':
-                # Trigram similarity search (good for typos)
-                results = Post.published.annotate(
-                    similarity=TrigramSimilarity('title', query),
-                ).filter(similarity__gt=0.1).order_by('-similarity')
-                
-            else:  # weighted search (default)
-                # Weighted search vectors with ranking
-                search_vector = SearchVector('title', weight='A') + \
-                               SearchVector('body', weight='B')
-                search_query = SearchQuery(query)
-                results = Post.published.annotate(
-                    search=search_vector,
-                    rank=SearchRank(search_vector, search_query)
-                ).filter(rank__gte=0.3).order_by('-rank')
-                
-                # If no results with ranking, fall back to lower threshold
-                if not results:
+            try:
+                if search_type == 'simple':
+                    # Simple search against title and body
+                    results = Post.published.annotate(
+                        search=SearchVector('title', 'body'),
+                    ).filter(search=query)
+                    
+                elif search_type == 'trigram':
+                    # Trigram similarity search (good for typos)
+                    results = Post.published.annotate(
+                        similarity=TrigramSimilarity('title', query),
+                    ).filter(similarity__gt=0.1).order_by('-similarity')
+                    
+                else:  # weighted search (default)
+                    # Weighted search vectors with ranking
+                    search_vector = SearchVector('title', weight='A') + \
+                                   SearchVector('body', weight='B')
+                    search_query = SearchQuery(query)
                     results = Post.published.annotate(
                         search=search_vector,
                         rank=SearchRank(search_vector, search_query)
-                    ).filter(rank__gte=0.1).order_by('-rank')
+                    ).filter(rank__gte=0.3).order_by('-rank')
+                    
+                    # If no results with ranking, fall back to lower threshold
+                    if not results:
+                        results = Post.published.annotate(
+                            search=search_vector,
+                            rank=SearchRank(search_vector, search_query)
+                        ).filter(rank__gte=0.1).order_by('-rank')
+            
+            except Exception as e:
+                error_message = f"Search error: {str(e)}"
+                print(f"Search error: {e}")  # For debugging
+                results = []
     
     return render(request,
                   'blog/post/search.html',
                   {'form': form,
                    'query': query,
                    'results': results,
-                   'search_type': search_type})
+                   'search_type': search_type,
+                   'error_message': error_message})
