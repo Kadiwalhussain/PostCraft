@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.conf import settings
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm
 from taggit.models import Tag
@@ -73,7 +74,7 @@ def post_share(request, post_id):
                 send_mail(
                     subject, 
                     message, 
-                    'colabhussain@gmail.com',  # Use the configured email
+                    settings.DEFAULT_FROM_EMAIL,  # Use the configured email from settings
                     [cd['to']],
                     fail_silently=False
                 )
