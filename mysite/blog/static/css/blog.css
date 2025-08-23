@@ -5,38 +5,44 @@
 
 /* Sunset Paradise Color Variables */
 :root {
-    /* Sunset Paradise Palette - Warm & Luxurious */
-    --primary-dark: #1a0e0a;        /* Deep burgundy black */
-    --primary-medium: #2d1b16;      /* Rich mahogany */
-    --secondary-dark: #4a2c20;      /* Warm brown */
-    --accent-gold: #ffd700;         /* Pure gold */
-    --accent-orange: #ff6b35;       /* Vibrant orange */
+    /* Pure Sunset Paradise Palette - No Blues, No Whites! */
+    --primary-dark: #2a0f08;        /* Deep sunset burgundy */
+    --primary-medium: #4a1c10;      /* Rich burnt sienna */
+    --secondary-dark: #6b2818;      /* Warm terracotta */
+    --accent-gold: #ffcc00;         /* Warm sunset gold */
+    --accent-orange: #ff6b35;       /* Vibrant sunset orange */
     --accent-coral: #ff8e72;        /* Soft coral */
     --accent-peach: #ffb085;        /* Warm peach */
-    --accent-cream: #fff8dc;        /* Cream white */
+    --accent-cream: #ffe4b5;        /* Warm moccasin */
+    --accent-red: #dc143c;          /* Crimson red */
+    --accent-amber: #ffbf00;        /* Rich amber */
     
     /* Gradients */
-    --bg-primary: linear-gradient(135deg, #1a0e0a 0%, #2d1b16 50%, #4a2c20 100%);
-    --bg-card: rgba(45, 27, 22, 0.95);
-    --bg-glass: rgba(255, 215, 0, 0.1);
-    --bg-hover: rgba(255, 107, 53, 0.1);
+    --bg-primary: linear-gradient(135deg, #2a0f08 0%, #4a1c10 50%, #6b2818 100%);
+    --bg-card: rgba(74, 28, 16, 0.95);
+    --bg-glass: rgba(255, 204, 0, 0.15);
+    --bg-hover: rgba(255, 107, 53, 0.15);
     
-    /* Perfect Text Colors - Much Better Contrast */
-    --text-primary: #ffffff;         /* Pure white for maximum readability */
-    --text-secondary: #f5f5f5;       /* Light gray for body text */
-    --text-accent: #ffd700;          /* Bright gold for links */
-    --text-muted: #cccccc;           /* Light gray for subtle text */
-    --text-gold: #ffd700;            /* Bright gold for headings */
+    /* Warm Sunset Text Colors - No White! */
+    --text-primary: #ffe4b5;         /* Warm moccasin for readability */
+    --text-secondary: #ffcc99;       /* Warm peach for body text */
+    --text-accent: #ffcc00;          /* Sunset gold for links */
+    --text-muted: #d2b48c;           /* Warm tan for subtle text */
+    --text-gold: #ffcc00;            /* Sunset gold for headings */
     --text-orange: #ff6b35;          /* Vibrant orange for accents */
     --text-coral: #ff8e72;           /* Soft coral for highlights */
+    --text-cream: #ffe4b5;           /* Warm cream */
+    --text-amber: #ffbf00;           /* Rich amber */
     
-    /* Effects */
-    --shadow-soft: 0 4px 25px rgba(255, 215, 0, 0.2);
-    --shadow-medium: 0 8px 35px rgba(255, 107, 53, 0.3);
-    --shadow-strong: 0 15px 45px rgba(255, 139, 114, 0.4);
-    --glow-gold: 0 0 30px rgba(255, 215, 0, 0.6);
-    --glow-orange: 0 0 30px rgba(255, 107, 53, 0.6);
-    --glow-coral: 0 0 30px rgba(255, 142, 114, 0.6);
+    /* Warm Sunset Effects - No Blues! */
+    --shadow-soft: 0 4px 25px rgba(255, 204, 0, 0.3);
+    --shadow-medium: 0 8px 35px rgba(255, 107, 53, 0.4);
+    --shadow-strong: 0 15px 45px rgba(220, 20, 60, 0.4);
+    --glow-gold: 0 0 30px rgba(255, 204, 0, 0.7);
+    --glow-orange: 0 0 30px rgba(255, 107, 53, 0.7);
+    --glow-coral: 0 0 30px rgba(255, 142, 114, 0.7);
+    --glow-amber: 0 0 30px rgba(255, 191, 0, 0.7);
+    --glow-red: 0 0 30px rgba(220, 20, 60, 0.6);
     
     /* Typography */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -82,7 +88,7 @@ body {
     text-shadow: 1px 1px 3px rgba(26, 14, 10, 0.7) !important;
 }
 
-/* Animated Sunset Background */
+/* Animated Pure Sunset Background */
 body::before {
     content: '';
     position: fixed;
@@ -91,9 +97,10 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255, 142, 114, 0.15) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(255, 204, 0, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(220, 20, 60, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 60% 30%, rgba(255, 191, 0, 0.1) 0%, transparent 40%);
     z-index: -1;
     animation: sunsetFloat 20s ease-in-out infinite;
 }
