@@ -9,6 +9,7 @@ A feature-rich Django blog application with PostgreSQL full-text search, email f
 
 ## ✨ Features
 
+
 ### 🔍 **Advanced Search System**
 - **PostgreSQL Full-Text Search** with multiple search algorithms
 - **Weighted Search**: Prioritizes title matches over content
