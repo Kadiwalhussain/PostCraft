@@ -1,0 +1,35 @@
+INFO 2025-08-19 10:02:54,547 autoreload 13258 8650383104 Watching for file changes with StatReloader
+INFO 2025-08-19 10:20:56,883 autoreload 27313 8650383104 Watching for file changes with StatReloader
+INFO 2025-08-19 10:22:36,446 autoreload 28352 8650383104 Watching for file changes with StatReloader
+INFO 2025-08-19 10:23:04,106 autoreload 28352 8650383104 /Users/muhammadhussainkadiwal/Documents/Jangi/mysite/settings.py changed, reloading.
+INFO 2025-08-19 10:23:04,321 autoreload 28391 8650383104 Watching for file changes with StatReloader
+INFO 2025-08-23 04:37:01,168 autoreload 23885 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:37:04,094 log 23885 6161608704 Not Found: /blog/2025/8/18/markdown-post/
+WARNING 2025-08-23 04:37:05,726 log 23885 6161608704 Not Found: /blog/2025/8/18/markdown-post/
+WARNING 2025-08-23 04:37:09,765 log 23885 6161608704 Not Found: /blog/2025/8/18/note-about-cn/
+INFO 2025-08-23 04:38:49,585 autoreload 26212 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:38:52,506 log 26212 6168784896 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:38:53,744 log 26212 6168784896 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:39:04,611 log 26212 6185611264 Not Found: /blog/2025/8/18/markdown-post/
+WARNING 2025-08-23 04:39:38,385 log 26212 6168784896 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:39:39,548 log 26212 6168784896 Not Found: /blog/2025/8/18/note-about-cn/
+INFO 2025-08-23 04:42:07,495 autoreload 29235 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:42:09,801 log 29235 6189756416 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:42:10,724 log 29235 6189756416 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:42:26,484 log 29235 6189756416 Not Found: /blog/2025/8/18/markdown-post/
+INFO 2025-08-23 04:43:24,339 autoreload 31340 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:43:27,528 log 31340 6196588544 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:43:28,823 log 31340 6196588544 Not Found: /blog/2025/8/18/note-about-cn/
+INFO 2025-08-23 04:44:25,621 autoreload 33900 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:44:29,131 log 33900 6129594368 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:44:30,507 log 33900 6129594368 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:44:34,371 log 33900 6129594368 Not Found: /blog/2025/8/18/note-about-cn/
+WARNING 2025-08-23 04:44:37,878 log 33900 6129594368 Not Found: /blog/2025/8/18/who-was-miles-davies/
+WARNING 2025-08-23 04:44:39,029 log 33900 6146420736 Not Found: /blog/2025/8/18/markdown-post/
+WARNING 2025-08-23 04:44:40,548 log 33900 6129594368 Not Found: /blog/2025/8/18/what-is-algorithm/
+WARNING 2025-08-23 04:44:51,394 log 33900 6129594368 Not Found: /blog/2025/8/18/what-is-algorithm/
+INFO 2025-08-23 04:47:45,892 autoreload 38375 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 04:47:52,555 log 38375 6190329856 Not Found: /blog/2025/8/18/what-is-algorithm/
+WARNING 2025-08-23 04:47:56,831 log 38375 6207156224 Not Found: /blog/2025/8/18/markdown-post/
+WARNING 2025-08-23 04:47:58,569 log 38375 6190329856 Not Found: /blog/2025/8/18/what-is-algorithm/
+WARNING 2025-08-23 04:47:59,666 log 38375 6190329856 Not Found: /blog/2025/8/18/what-is-algorithm/

@@ -1,0 +1,32 @@
+PostCraft - Your AI Knowledge Hub
+=======================================
+
+{% if form.cleaned_data.comments %}
+Personal message from {{ form.cleaned_data.name }} ({{ form.cleaned_data.email }}):
+"{{ form.cleaned_data.comments }}"
+
+{% endif %}{{ post.title }}
+{{ post.title|length|ljust:"=" }}
+
+By {{ post.author.get_full_name|default:post.author.username }}
+Published: {{ post.publish|date:"F d, Y" }}
+{% if post.tags.all %}Tags: {% for tag in post.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
+
+{{ post.get_excerpt:100 }}
+
+Read the full article: {{ post_url }}
+
+---
+
+Share this article:
+• Twitter: https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ post_url|urlencode }}
+• LinkedIn: https://www.linkedin.com/sharing/share-offsite/?url={{ post_url|urlencode }}
+• Facebook: https://www.facebook.com/sharer/sharer.php?u={{ post_url|urlencode }}
+
+---
+
+PostCraft
+Discover the latest insights in AI, technology, and innovation.
+Building the future, one article at a time.
+
+Visit our blog: {{ post_url }}

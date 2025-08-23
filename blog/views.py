@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
-from django.db.models import Count
+from django.db.models import Count, Q
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm
 from taggit.models import Tag
@@ -95,3 +95,23 @@ def post_comment(request, post_id):
         'form': form,
         'similar_posts': similar_posts,
     })
+
+def post_search(request):
+    """Search for posts"""
+    query = None
+    results = []
+    
+    if 'query' in request.GET:
+        query = request.GET['query']
+        if query:
+            results = Post.published.filter(
+                Q(title__icontains=query) |
+                Q(body__icontains=query) |
+                Q(excerpt__icontains=query)
+            )
+    
+    context = {
+        'query': query,
+        'results': results,
+    }
+    return render(request, 'blog/post/search.html', context)

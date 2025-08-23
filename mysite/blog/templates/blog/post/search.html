@@ -1,63 +1,171 @@
 {% extends "blog/base.html" %}
 {% load blog_tags %}
 
-{% block title %}Search{% endblock %}
+{% block title %}Search Posts - PostCraft{% endblock %}
 
 {% block content %}
+<div class="search-page">
   {% if query %}
-    <h1>Posts containing "{{ query }}"</h1>
-    <h3>
-      {% with results.count as total_results %}
-        Found {{ total_results }} result{{ total_results|pluralize }}
-        {% if search_type == 'weighted' %}
-          using weighted search
-        {% elif search_type == 'trigram' %}
-          using trigram similarity
-        {% elif search_type == 'simple' %}
-          using simple search
-        {% endif %}
-      {% endwith %}
-    </h3>
-    {% for post in results %}
-      <h4>
-        <a href="{{ post.get_absolute_url }}">
-          {{ post.title }}
+    <div class="search-results">
+      <div class="search-header card">
+        <h1><i class="fas fa-search"></i> Search Results</h1>
+        <div class="search-query">
+          Showing results for: <strong>"{{ query }}"</strong>
+        </div>
+        <div class="search-stats">
+          {% with results.count as total_results %}
+            <span class="result-count">{{ total_results }} result{{ total_results|pluralize }} found</span>
+            <span class="search-method">
+              {% if search_type == 'weighted' %}
+                <i class="fas fa-weight"></i> Weighted Search
+              {% elif search_type == 'trigram' %}
+                <i class="fas fa-spell-check"></i> Trigram Similarity
+              {% elif search_type == 'simple' %}
+                <i class="fas fa-search"></i> Simple Search
+              {% endif %}
+            </span>
+          {% endwith %}
+        </div>
+      </div>
+
+      <div class="search-results-list">
+        {% for post in results %}
+          <article class="search-result-item card">
+            <div class="result-header">
+              <h3 class="result-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+              </h3>
+              <div class="result-meta">
+                <span><i class="fas fa-calendar-alt"></i> {{ post.publish|date:"M d, Y" }}</span>
+                <span><i class="fas fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}</span>
+                {% if post.rank %}
+                  <span class="result-score"><i class="fas fa-chart-line"></i> Rank: {{ post.rank|floatformat:3 }}</span>
+                {% elif post.similarity %}
+                  <span class="result-score"><i class="fas fa-percentage"></i> Match: {{ post.similarity|floatformat:3 }}</span>
+                {% endif %}
+              </div>
+            </div>
+            
+            {% if post.tags.all %}
+            <div class="result-tags">
+              {% for tag in post.tags.all %}
+                <a href="{% url 'blog:post_list_by_tag' tag.slug %}" class="tag">{{ tag.name }}</a>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="result-excerpt">
+              {{ post.body|striptags|truncatewords_html:20 }}
+            </div>
+            
+            <div class="result-footer">
+              <a href="{{ post.get_absolute_url }}" class="read-more">
+                <span>Read Full Article</span>
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        {% empty %}
+          <div class="no-results card">
+            <div class="no-results-icon">
+              <i class="fas fa-search-minus"></i>
+            </div>
+            <h3>No results found</h3>
+            <p>We couldn't find any posts matching "<strong>{{ query }}</strong>"</p>
+            {% if search_type == 'weighted' %}
+              <div class="search-suggestion">
+                <p><i class="fas fa-lightbulb"></i> <em>Try using "Trigram Similarity" search for better results with typos.</em></p>
+              </div>
+            {% endif %}
+            <div class="search-tips">
+              <h4>Search Tips:</h4>
+              <ul>
+                <li>Check your spelling</li>
+                <li>Try different keywords</li>
+                <li>Use broader terms</li>
+                <li>Try the Trigram search for fuzzy matching</li>
+              </ul>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="search-actions">
+        <a href="{% url "blog:post_search" %}" class="btn btn-secondary">
+          <i class="fas fa-search"></i>
+          <span>New Search</span>
         </a>
-        {% if post.rank %}
-          <small class="text-muted">(Rank: {{ post.rank|floatformat:3 }})</small>
-        {% elif post.similarity %}
-          <small class="text-muted">(Similarity: {{ post.similarity|floatformat:3 }})</small>
-        {% endif %}
-      </h4>
-      {{ post.body|markdown|truncatewords_html:12 }}
-      <hr>
-    {% empty %}
-      <p>There are no results for your query.</p>
-      {% if search_type == 'weighted' %}
-        <p><em>Try using "Trigram Similarity" search for better results with typos.</em></p>
-      {% endif %}
-    {% endfor %}
-    <p><a href="{% url "blog:post_search" %}">Search again</a></p>
-  {% else %}
-    <h1>Search for posts</h1>
-    <div class="alert alert-info">
-      <h4>Search Types:</h4>
-      <ul>
-        <li><strong>Weighted Search:</strong> Prioritizes title matches over content matches</li>
-        <li><strong>Simple Search:</strong> Basic full-text search across title and content</li>
-        <li><strong>Trigram Similarity:</strong> Good for finding results even with typos</li>
-      </ul>
+        <a href="{% url 'blog:post_list' %}" class="btn">
+          <i class="fas fa-home"></i>
+          <span>Back to Home</span>
+        </a>
+      </div>
     </div>
-    <form method="get">
-      <div class="form-group">
-        {{ form.query.label_tag }}
-        {{ form.query }}
+
+  {% else %}
+    <div class="search-form-page">
+      <div class="search-hero card">
+        <h1><i class="fas fa-search"></i> Search PostCraft</h1>
+        <p class="search-subtitle">Find the perfect article from our collection of posts</p>
       </div>
-      <div class="form-group">
-        {{ form.search_type.label_tag }}
-        {{ form.search_type }}
+
+      <div class="search-info card">
+        <h3><i class="fas fa-info-circle"></i> Search Types</h3>
+        <div class="search-types-grid">
+          <div class="search-type-item">
+            <div class="search-type-icon">
+              <i class="fas fa-weight"></i>
+            </div>
+            <h4>Weighted Search</h4>
+            <p>Prioritizes title matches over content matches for more relevant results</p>
+          </div>
+          
+          <div class="search-type-item">
+            <div class="search-type-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h4>Simple Search</h4>
+            <p>Basic full-text search across title and content with exact matching</p>
+          </div>
+          
+          <div class="search-type-item">
+            <div class="search-type-icon">
+              <i class="fas fa-spell-check"></i>
+            </div>
+            <h4>Trigram Similarity</h4>
+            <p>Advanced search that finds results even with typos and similar words</p>
+          </div>
+        </div>
       </div>
-      <input type="submit" value="Search" class="btn btn-primary">
-    </form>
+
+      <div class="search-form card">
+        <h3><i class="fas fa-pen"></i> Start Your Search</h3>
+        <form method="get" class="search-form-container">
+          <div class="form-group">
+            <label for="{{ form.query.id_for_label }}" class="form-label">
+              <i class="fas fa-search"></i> Search Query
+            </label>
+            {{ form.query }}
+            <small class="form-help">Enter keywords, phrases, or topics you're interested in</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="{{ form.search_type.id_for_label }}" class="form-label">
+              <i class="fas fa-cogs"></i> Search Type
+            </label>
+            {{ form.search_type }}
+            <small class="form-help">Choose the search method that best fits your needs</small>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn">
+              <i class="fas fa-search"></i>
+              <span>Search Posts</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   {% endif %}
+</div>
 {% endblock %}

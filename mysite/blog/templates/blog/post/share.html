@@ -1,42 +1,189 @@
 {% extends "blog/base.html" %}
 
-{% block title %}Share a post{% endblock %}
+{% block title %}Share "{{ post.title }}" - PostCraft{% endblock %}
 
 {% block content %}
+<div class="share-page">
     {% if sent %}
-        <h1>E-mail successfully sent</h1>
-        <p>"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
-        <p><a href="{{ post.get_absolute_url }}">Back to post</a></p>
+        <div class="share-success card">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1><i class="fas fa-paper-plane"></i> Email Sent Successfully!</h1>
+            <p class="success-message">
+                "<strong>{{ post.title }}</strong>" has been successfully shared with 
+                <strong>{{ form.cleaned_data.to }}</strong>.
+            </p>
+            <div class="success-actions">
+                <a href="{{ post.get_absolute_url }}" class="btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Post</span>
+                </a>
+                <a href="{% url 'blog:post_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </div>
+        </div>
     {% else %}
-        <h1>Share "{{ post.title }}" by e-mail</h1>
+        <div class="share-header card">
+            <h1><i class="fas fa-share-alt"></i> Share Article</h1>
+            <div class="post-preview">
+                <h2 class="shared-post-title">{{ post.title }}</h2>
+                <div class="shared-post-meta">
+                    <span><i class="fas fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}</span>
+                    <span><i class="fas fa-calendar-alt"></i> {{ post.publish|date:"F d, Y" }}</span>
+                </div>
+            </div>
+        </div>
         
         {% if error_message %}
             <div class="alert alert-danger">
-                <strong>Error:</strong> {{ error_message }}
-                <p><em>Note: Email functionality requires proper SMTP configuration. For development, you can use console backend or check server logs.</em></p>
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                    <strong>Error:</strong> {{ error_message }}
+                    <p><em>Note: Email functionality requires proper SMTP configuration. For development, you can use console backend or check server logs.</em></p>
+                </div>
             </div>
         {% endif %}
         
-        <form method="post">
-            <div class="form-group">
-                {{ form.name.label_tag }}
-                {{ form.name }}
+        <div class="share-form card">
+            <h3><i class="fas fa-envelope"></i> Send via Email</h3>
+            <p class="form-description">Share this amazing article with your friends and colleagues.</p>
+            
+            <form method="post" class="email-share-form">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">
+                            <i class="fas fa-user"></i> Your Name
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="form-errors">
+                                {% for error in form.name.errors %}
+                                    <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">
+                            <i class="fas fa-envelope"></i> Your Email
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="form-errors">
+                                {% for error in form.email.errors %}
+                                    <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.to.id_for_label }}" class="form-label">
+                        <i class="fas fa-paper-plane"></i> Send To
+                    </label>
+                    {{ form.to }}
+                    <small class="form-help">Enter the recipient's email address</small>
+                    {% if form.to.errors %}
+                        <div class="form-errors">
+                            {% for error in form.to.errors %}
+                                <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.comments.id_for_label }}" class="form-label">
+                        <i class="fas fa-comment-alt"></i> Personal Message (Optional)
+                    </label>
+                    {{ form.comments }}
+                    <small class="form-help">Add a personal note to your shared article</small>
+                    {% if form.comments.errors %}
+                        <div class="form-errors">
+                            {% for error in form.comments.errors %}
+                                <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Email</span>
+                    </button>
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        <span>Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="alternative-sharing card">
+            <h3><i class="fas fa-share-nodes"></i> Share on Social Media</h3>
+            <p>Or share this article on your favorite social platforms:</p>
+            
+            <div class="social-share-buttons">
+                {% with request.build_absolute_uri|add:post.get_absolute_url as absolute_url %}
+                <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ absolute_url }}" 
+                   target="_blank" class="social-btn twitter-btn">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                </a>
+                
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ absolute_url }}" 
+                   target="_blank" class="social-btn linkedin-btn">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url }}" 
+                   target="_blank" class="social-btn facebook-btn">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </a>
+                
+                <button onclick="copyToClipboard('{{ absolute_url }}')" 
+                        class="social-btn copy-btn">
+                    <i class="fas fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
+                {% endwith %}
+                    <i class="fas fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
             </div>
-            <div class="form-group">
-                {{ form.email.label_tag }}
-                {{ form.email }}
-            </div>
-            <div class="form-group">
-                {{ form.to.label_tag }}
-                {{ form.to }}
-            </div>
-            <div class="form-group">
-                {{ form.comments.label_tag }}
-                {{ form.comments }}
-            </div>
-            {% csrf_token %}
-            <input type="submit" value="Send e-mail" class="btn btn-primary">
-            <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
-        </form>
+        </div>
     {% endif %}
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        const btn = event.target.closest('.copy-btn');
+        const originalText = btn.querySelector('span').textContent;
+        btn.querySelector('span').textContent = 'Copied!';
+        btn.style.background = 'var(--success-color)';
+        
+        setTimeout(() => {
+            btn.querySelector('span').textContent = originalText;
+            btn.style.background = '';
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+
 {% endblock %}

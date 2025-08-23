@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'taggit',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -70,12 +69,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
-        'USER': 'blog',
-        'PASSWORD': 'blogpassword123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -111,7 +106,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Additional directories to search for static files
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -119,28 +125,24 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------------------------------
-# Email server configuration
-# ------------------------------------------------
-
-# Choose ONE of the following email backends:
-
-# 1. REAL EMAIL SENDING (Fixed Gmail SMTP) - Uncomment to send real emails
-EMAIL_BACKEND = 'blog.email_backend.FixedSMTPBackend'
+# EMAIL CONFIGURATION - Using console backend for testing
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows in terminal
+# EMAIL_BACKEND = 'blog.email_backend.FixedSMTPBackend'  # Custom SMTP backend
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'colabhussain@gmail.com'
-EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'  # Use App Password, not regular password
+EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'  # Used App Password, not regular password
 DEFAULT_FROM_EMAIL = 'colabhussain@gmail.com'
 EMAIL_TIMEOUT = 30
 
-# 2. STANDARD SMTP (if custom backend doesn't work)
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# 3. CONSOLE EMAIL (Development) - Shows emails in terminal
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# 4. FILE EMAIL (Save to files) - Alternative for testing
-# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# Alternative backends for development/testing:
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows in terminal
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'  # Saves to files
 # EMAIL_FILE_PATH = '/tmp/app-messages'
+
+# MEDIA FILES CONFIGURATION
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
