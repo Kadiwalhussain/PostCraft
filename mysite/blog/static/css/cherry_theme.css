@@ -1,0 +1,40 @@
+/* ========================================
+   PostCraft - STUNNING CHERRY BLOSSOM THEME
+   Beautiful Pink & Purple with Rose Gold Elegance
+   ======================================== */
+
+/* Cherry Blossom Color Variables */
+:root {
+    /* Cherry Blossom Palette - Elegant & Modern */
+    --primary-dark: #2a1a2e;        /* Deep plum */
+    --primary-medium: #16213e;      /* Dark purple blue */
+    --secondary-dark: #533a71;      /* Rich purple */
+    --accent-rose: #ff69b4;         /* Hot pink */
+    --accent-gold: #ffc0cb;         /* Rose gold */
+    --accent-lavender: #dda0dd;     /* Soft lavender */
+    --accent-blush: #ffb6c1;        /* Light pink */
+    --accent-white: #fff0f5;        /* Lavender blush */
+    
+    /* Gradients */
+    --bg-primary: linear-gradient(135deg, #2a1a2e 0%, #16213e 50%, #533a71 100%);
+    --bg-card: rgba(22, 33, 62, 0.95);
+    --bg-glass: rgba(255, 105, 180, 0.1);
+    --bg-hover: rgba(255, 192, 203, 0.1);
+    
+    /* Text Colors */
+    --text-primary: #fff0f5;
+    --text-secondary: #ffb6c1;
+    --text-accent: #ff69b4;
+    --text-muted: #dda0dd;
+    --text-rose: #ff69b4;
+    --text-gold: #ffc0cb;
+    --text-lavender: #dda0dd;
+    
+    /* Effects */
+    --shadow-soft: 0 4px 25px rgba(255, 105, 180, 0.2);
+    --shadow-medium: 0 8px 35px rgba(255, 192, 203, 0.3);
+    --shadow-strong: 0 15px 45px rgba(221, 160, 221, 0.4);
+    --glow-rose: 0 0 30px rgba(255, 105, 180, 0.6);
+    --glow-gold: 0 0 30px rgba(255, 192, 203, 0.6);
+    --glow-lavender: 0 0 30px rgba(221, 160, 221, 0.6);
+}

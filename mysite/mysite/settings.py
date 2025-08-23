@@ -125,15 +125,14 @@ STATICFILES_FINDERS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------------------------------
-# EMAIL CONFIGURATION - Using console backend for testing
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows in terminal
-# EMAIL_BACKEND = 'blog.email_backend.FixedSMTPBackend'  # Custom SMTP backend
+# EMAIL CONFIGURATION - Real SMTP email sending
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Real SMTP sending
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'colabhussain@gmail.com'
-EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'  # Used App Password, not regular password
+EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'  # App Password for Gmail
 DEFAULT_FROM_EMAIL = 'colabhussain@gmail.com'
 EMAIL_TIMEOUT = 30
 

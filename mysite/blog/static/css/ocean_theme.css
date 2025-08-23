@@ -1,0 +1,40 @@
+/* ========================================
+   PostCraft - STUNNING OCEAN BREEZE THEME
+   Beautiful Cool Colors with Turquoise Elegance
+   ======================================== */
+
+/* Ocean Breeze Color Variables */
+:root {
+    /* Ocean Breeze Palette - Cool & Sophisticated */
+    --primary-dark: #0d1b2a;        /* Deep ocean blue */
+    --primary-medium: #1b263b;      /* Navy blue */
+    --secondary-dark: #415a77;      /* Steel blue */
+    --accent-turquoise: #40e0d0;    /* Bright turquoise */
+    --accent-aqua: #00ffff;         /* Pure aqua */
+    --accent-teal: #008080;         /* Rich teal */
+    --accent-mint: #98fb98;         /* Soft mint */
+    --accent-white: #f0f8ff;        /* Alice blue */
+    
+    /* Gradients */
+    --bg-primary: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+    --bg-card: rgba(27, 38, 59, 0.95);
+    --bg-glass: rgba(64, 224, 208, 0.1);
+    --bg-hover: rgba(0, 255, 255, 0.1);
+    
+    /* Text Colors */
+    --text-primary: #f0f8ff;
+    --text-secondary: #98fb98;
+    --text-accent: #40e0d0;
+    --text-muted: #00ffff;
+    --text-turquoise: #40e0d0;
+    --text-aqua: #00ffff;
+    --text-mint: #98fb98;
+    
+    /* Effects */
+    --shadow-soft: 0 4px 25px rgba(64, 224, 208, 0.2);
+    --shadow-medium: 0 8px 35px rgba(0, 255, 255, 0.3);
+    --shadow-strong: 0 15px 45px rgba(152, 251, 152, 0.4);
+    --glow-turquoise: 0 0 30px rgba(64, 224, 208, 0.6);
+    --glow-aqua: 0 0 30px rgba(0, 255, 255, 0.6);
+    --glow-mint: 0 0 30px rgba(152, 251, 152, 0.6);
+}

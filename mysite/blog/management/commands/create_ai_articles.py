@@ -1,5 +1,5 @@
 """
-Django management command to create 100 AI-related articles for PostCraft blog
+Django management command to create 1000 AI and Computer Science articles for PostCraft blog
 """
 import random
 from django.core.management.base import BaseCommand
@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 
 class Command(BaseCommand):
-    help = 'Create 100 AI-related articles for the PostCraft blog'
+    help = 'Create 1000 AI and Computer Science articles for the PostCraft blog'
 
     def add_arguments(self, parser):
         parser.add_argument(

@@ -1,0 +1,40 @@
+/* ========================================
+   PostCraft - STUNNING SUNSET PARADISE THEME
+   Beautiful Warm Colors with Golden Elegance
+   ======================================== */
+
+/* Sunset Paradise Color Variables */
+:root {
+    /* Sunset Paradise Palette - Warm & Luxurious */
+    --primary-dark: #1a0e0a;        /* Deep burgundy black */
+    --primary-medium: #2d1b16;      /* Rich mahogany */
+    --secondary-dark: #4a2c20;      /* Warm brown */
+    --accent-gold: #ffd700;         /* Pure gold */
+    --accent-orange: #ff6b35;       /* Vibrant orange */
+    --accent-coral: #ff8e72;        /* Soft coral */
+    --accent-peach: #ffb085;        /* Warm peach */
+    --accent-cream: #fff8dc;        /* Cream white */
+    
+    /* Gradients */
+    --bg-primary: linear-gradient(135deg, #1a0e0a 0%, #2d1b16 50%, #4a2c20 100%);
+    --bg-card: rgba(45, 27, 22, 0.95);
+    --bg-glass: rgba(255, 215, 0, 0.1);
+    --bg-hover: rgba(255, 107, 53, 0.1);
+    
+    /* Text Colors */
+    --text-primary: #fff8dc;
+    --text-secondary: #ffb085;
+    --text-accent: #ffd700;
+    --text-muted: #ff8e72;
+    --text-gold: #ffd700;
+    --text-orange: #ff6b35;
+    --text-coral: #ff8e72;
+    
+    /* Effects */
+    --shadow-soft: 0 4px 25px rgba(255, 215, 0, 0.2);
+    --shadow-medium: 0 8px 35px rgba(255, 107, 53, 0.3);
+    --shadow-strong: 0 15px 45px rgba(255, 139, 114, 0.4);
+    --glow-gold: 0 0 30px rgba(255, 215, 0, 0.6);
+    --glow-orange: 0 0 30px rgba(255, 107, 53, 0.6);
+    --glow-coral: 0 0 30px rgba(255, 142, 114, 0.6);
+}

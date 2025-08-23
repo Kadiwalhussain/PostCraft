@@ -1,0 +1,532 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Share "{{ post.title }}" - PostCraft{% endblock %}
+
+{% block content %}
+<div class="share-page">
+    {% if sent %}
+        <div class="share-success card animate-in">
+            <div class="success-icon">
+                <i class="fas fa-check-circle neon-text"></i>
+            </div>
+            <h1><i class="fas fa-paper-plane"></i> Email Sent Successfully!</h1>
+            <p class="success-message">
+                "<strong>{{ post.title }}</strong>" has been successfully shared with 
+                <strong>{{ form.cleaned_data.to }}</strong>.
+            </p>
+            <div class="success-actions">
+                <a href="{{ post.get_absolute_url }}" class="btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Post</span>
+                </a>
+                <a href="{% url 'blog:post_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="share-header card animate-in">
+            <h1><i class="fas fa-share-alt neon-text"></i> Share This Amazing Article</h1>
+            <div class="post-preview">
+                <h2 class="shared-post-title">{{ post.title }}</h2>
+                <div class="shared-post-meta">
+                    <span><i class="fas fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}</span>
+                    <span><i class="fas fa-calendar-alt"></i> {{ post.publish|date:"F d, Y" }}</span>
+                    <span><i class="fas fa-eye"></i> {{ post.views|default:0 }} views</span>
+                </div>
+                <p class="post-excerpt">{{ post.body|striptags|truncatewords:25 }}</p>
+            </div>
+        </div>
+        
+        {% if error_message %}
+            <div class="alert alert-danger animate-in-delay">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                    <strong>Error:</strong> {{ error_message }}
+                    <p><em>Note: Email functionality requires proper SMTP configuration. For development, you can use console backend or check server logs.</em></p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Enhanced Share Section -->
+        <div class="share-section animate-in-delay">
+            <div class="share-header">
+                <h3><i class="fas fa-rocket"></i> Choose Your Sharing Method</h3>
+                <p>Spread the knowledge and inspire others!</p>
+            </div>
+            
+            <!-- Social Media Share Buttons -->
+            <div class="share-buttons">
+                <a href="{% url 'blog:post_share' post.id %}" class="share-btn share-btn-email">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span class="btn-title">Email Share</span>
+                        <span class="btn-subtitle">Send to friends</span>
+                    </div>
+                </a>
+                
+                <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}&via=PostCraft" target="_blank" class="share-btn share-btn-twitter">
+                    <i class="fab fa-twitter"></i>
+                    <div>
+                        <span class="btn-title">Twitter</span>
+                        <span class="btn-subtitle">Tweet this</span>
+                    </div>
+                </a>
+                
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="share-btn share-btn-linkedin">
+                    <i class="fab fa-linkedin"></i>
+                    <div>
+                        <span class="btn-title">LinkedIn</span>
+                        <span class="btn-subtitle">Professional share</span>
+                    </div>
+                </a>
+                
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="share-btn share-btn-facebook">
+                    <i class="fab fa-facebook"></i>
+                    <div>
+                        <span class="btn-title">Facebook</span>
+                        <span class="btn-subtitle">Share with friends</span>
+                    </div>
+                </a>
+                
+                <button onclick="copyToClipboard()" class="share-btn share-btn-copy">
+                    <i class="fas fa-copy"></i>
+                    <div>
+                        <span class="btn-title">Copy Link</span>
+                        <span class="btn-subtitle">Share anywhere</span>
+                    </div>
+                </button>
+                
+                <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="share-btn share-btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span class="btn-title">WhatsApp</span>
+                        <span class="btn-subtitle">Quick share</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Email Form -->
+            <div class="email-form animate-in-delay-2">
+                <h3><i class="fas fa-envelope-open"></i> Send via Email</h3>
+                <p class="form-description">Share this incredible article with your network and make their day better!</p>
+                
+                <form method="post" class="email-share-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">
+                                <i class="fas fa-user"></i> Your Name
+                            </label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="form-errors">
+                                    {% for error in form.name.errors %}
+                                        <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="fas fa-envelope"></i> Your Email
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="form-errors">
+                                    {% for error in form.email.errors %}
+                                        <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.to.id_for_label }}" class="form-label">
+                            <i class="fas fa-paper-plane"></i> Send To
+                        </label>
+                        {{ form.to }}
+                        <small class="form-help">Enter the recipient's email address</small>
+                        {% if form.to.errors %}
+                            <div class="form-errors">
+                                {% for error in form.to.errors %}
+                                    <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.comments.id_for_label }}" class="form-label">
+                            <i class="fas fa-comment"></i> Personal Message (Optional)
+                        </label>
+                        {{ form.comments }}
+                        <small class="form-help">Add a personal note to make it more special</small>
+                        {% if form.comments.errors %}
+                            <div class="form-errors">
+                                {% for error in form.comments.errors %}
+                                    <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-neon">
+                            <i class="fas fa-rocket"></i>
+                            <span>Send Email</span>
+                        </button>
+                        <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i>
+                            <span>Cancel</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Share Statistics -->
+        <div class="share-stats card animate-in-delay-2">
+            <h3><i class="fas fa-chart-line"></i> Article Impact</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-number">{{ post.views|default:0 }}</span>
+                    <span class="stat-label">Views</span>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-comments"></i>
+                    <span class="stat-number">{{ post.comments.count }}</span>
+                    <span class="stat-label">Comments</span>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-share"></i>
+                    <span class="stat-number">{{ post.shares|default:0 }}</span>
+                    <span class="stat-label">Shares</span>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-heart"></i>
+                    <span class="stat-number">{{ post.likes|default:0 }}</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Copy to Clipboard Script -->
+<script>
+function copyToClipboard() {
+    const url = "{{ request.build_absolute_uri }}{{ post.get_absolute_url }}";
+    navigator.clipboard.writeText(url).then(function() {
+        // Show success message
+        const btn = event.target.closest('.share-btn-copy');
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i><div><span class="btn-title">Copied!</span><span class="btn-subtitle">Link copied</span></div>';
+        btn.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.style.background = '';
+        }, 2000);
+    }, function() {
+        alert('Failed to copy link. Please copy manually: ' + url);
+    });
+}
+
+// Add animation classes on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    });
+    
+    document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+
+<style>
+.share-page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.shared-post-title {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: var(--space-3);
+    text-align: center;
+}
+
+.shared-post-meta {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.shared-post-meta span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.post-excerpt {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.share-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-all);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+.share-btn i {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.btn-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-subtitle {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.share-btn-copy {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.share-btn-whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-4);
+}
+
+.stat-box {
+    text-align: center;
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition-all);
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.stat-box i {
+    font-size: 1.5rem;
+    color: var(--neon-blue);
+    margin-bottom: var(--space-2);
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: var(--space-1);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-help {
+    display: block;
+    margin-top: var(--space-1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    margin-top: var(--space-6);
+}
+
+.success-icon {
+    text-align: center;
+    margin-bottom: var(--space-4);
+}
+
+.success-icon i {
+    font-size: 4rem;
+    color: var(--neon-green);
+}
+
+.success-message {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: var(--space-6);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.success-actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .share-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .shared-post-meta {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-2);
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .success-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+                
+                <div class="form-group">
+                    <label for="{{ form.comments.id_for_label }}" class="form-label">
+                        <i class="fas fa-comment-alt"></i> Personal Message (Optional)
+                    </label>
+                    {{ form.comments }}
+                    <small class="form-help">Add a personal note to your shared article</small>
+                    {% if form.comments.errors %}
+                        <div class="form-errors">
+                            {% for error in form.comments.errors %}
+                                <span class="error-message"><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Email</span>
+                    </button>
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        <span>Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="alternative-sharing card">
+            <h3><i class="fas fa-share-nodes"></i> Share on Social Media</h3>
+            <p>Or share this article on your favorite social platforms:</p>
+            
+            <div class="social-share-buttons">
+                {% with request.build_absolute_uri|add:post.get_absolute_url as absolute_url %}
+                <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ absolute_url }}" 
+                   target="_blank" class="social-btn twitter-btn">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                </a>
+                
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ absolute_url }}" 
+                   target="_blank" class="social-btn linkedin-btn">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url }}" 
+                   target="_blank" class="social-btn facebook-btn">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </a>
+                
+                <button onclick="copyToClipboard('{{ absolute_url }}')" 
+                        class="social-btn copy-btn">
+                    <i class="fas fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
+                {% endwith %}
+                    <i class="fas fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        const btn = event.target.closest('.copy-btn');
+        const originalText = btn.querySelector('span').textContent;
+        btn.querySelector('span').textContent = 'Copied!';
+        btn.style.background = 'var(--success-color)';
+        
+        setTimeout(() => {
+            btn.querySelector('span').textContent = originalText;
+            btn.style.background = '';
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+
+{% endblock %}

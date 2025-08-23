@@ -33,3 +33,34 @@ WARNING 2025-08-23 04:47:52,555 log 38375 6190329856 Not Found: /blog/2025/8/18/
 WARNING 2025-08-23 04:47:56,831 log 38375 6207156224 Not Found: /blog/2025/8/18/markdown-post/
 WARNING 2025-08-23 04:47:58,569 log 38375 6190329856 Not Found: /blog/2025/8/18/what-is-algorithm/
 WARNING 2025-08-23 04:47:59,666 log 38375 6190329856 Not Found: /blog/2025/8/18/what-is-algorithm/
+INFO 2025-08-23 05:30:46,316 autoreload 76373 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:36:25,741 autoreload 80381 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 05:36:44,890 log 80381 6170177536 Not Found: /
+WARNING 2025-08-23 05:36:44,987 log 80381 6170177536 Not Found: /favicon.ico
+WARNING 2025-08-23 05:36:46,411 log 80381 6170177536 Not Found: /
+INFO 2025-08-23 05:37:12,723 autoreload 80381 8789303040 /Users/muhammadhussainkadiwal/Documents/Jangi/mysite/settings.py changed, reloading.
+INFO 2025-08-23 05:37:13,023 autoreload 80931 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:41:03,270 autoreload 84745 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:41:32,199 autoreload 85810 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:42:04,801 autoreload 86776 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:44:56,904 autoreload 90169 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:47:51,848 autoreload 93529 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:49:06,414 autoreload 95116 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 05:49:13,133 log 95116 6131642368 Not Found: /blog/post/395/share/
+INFO 2025-08-23 05:50:31,245 autoreload 98472 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 05:50:36,356 log 98472 6125940736 Not Found: /blog/tag/programming_1/
+WARNING 2025-08-23 05:50:39,715 log 98472 6125940736 Not Found: /blog/tag/tutorial/
+INFO 2025-08-23 05:55:14,343 autoreload 4015 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:55:36,825 autoreload 4015 8789303040 /Users/muhammadhussainkadiwal/Documents/Jangi/mysite/settings.py changed, reloading.
+INFO 2025-08-23 05:55:37,090 autoreload 4260 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 05:57:35,155 autoreload 6501 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 05:57:57,013 log 6501 6135492608 Not Found: /blog/post/592/share/
+INFO 2025-08-23 06:06:56,155 autoreload 15825 8789303040 Watching for file changes with StatReloader
+WARNING 2025-08-23 06:07:06,009 log 15825 6192312320 Not Found: /blog/post/592/share/
+WARNING 2025-08-23 06:07:14,604 log 15825 6192312320 Not Found: /blog/post/592/share/
+INFO 2025-08-23 08:56:42,487 autoreload 6165 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 09:04:38,635 autoreload 12745 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 09:09:30,524 autoreload 16718 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 09:18:07,946 autoreload 23453 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 09:50:52,001 autoreload 50426 8789303040 Watching for file changes with StatReloader
+INFO 2025-08-23 09:58:54,465 autoreload 56972 8789303040 Watching for file changes with StatReloader

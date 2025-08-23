@@ -102,24 +102,51 @@ def post_share(request, post_id):
         form = EmailPostForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            # Build the email
+            
+            # Build the absolute URL
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['name']} recommends you read '{post.title}'"
-            message = f"Read '{post.title}' at {post_url}\n\n" \
-                     f"{cd['name']}'s comments: {cd['comments']}"
+            
+            # Create email content
+            subject = f'{cd["name"]} recommends you read \'{post.title}\''
+            message = f'\nHi there!\n\n{cd["name"]} thought you\'d be interested in reading this article:\n\n\"{post.title}\"\n\nYou can read it here: {post_url}\n\n{cd["name"]}\'s comments: {cd["comments"]}\n\nBest regards,\nThe PostCraft Team'
             
             try:
+                # Import here to avoid issues
+                from django.core.mail import send_mail
+                from django.conf import settings
+                
+                # Send email with better error handling
                 send_mail(
                     subject=subject,
                     message=message,
-                    from_email=None,  # Uses DEFAULT_FROM_EMAIL
+                    from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[cd['to']],
                     fail_silently=False,
                 )
                 sent = True
                 messages.success(request, f'Post was successfully shared with {cd["to"]}!')
+                
+                # Log successful send
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.info(f'Email sent successfully to {cd["to"]} for post {post.title}')
+                
             except Exception as e:
-                messages.error(request, f'Error sending email: {str(e)}')
+                # Log the error
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f'Email sending failed: {str(e)}')
+                
+                messages.error(request, f'Failed to send email. Please try again later. Error: {str(e)}')
+                
+                # Return form with error context
+                context = {
+                    'post': post,
+                    'form': form,
+                    'sent': False,
+                    'error_message': str(e),
+                }
+                return render(request, 'blog/post/share.html', context)
     else:
         form = EmailPostForm()
     

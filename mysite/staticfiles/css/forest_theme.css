@@ -1,0 +1,40 @@
+/* ========================================
+   PostCraft - STUNNING FOREST EMERALD THEME
+   Beautiful Green & Gold with Natural Elegance
+   ======================================== */
+
+/* Forest Emerald Color Variables */
+:root {
+    /* Forest Emerald Palette - Rich & Sophisticated */
+    --primary-dark: #0f2027;        /* Deep forest */
+    --primary-medium: #203a43;      /* Pine green */
+    --secondary-dark: #2c5530;      /* Forest green */
+    --accent-emerald: #50c878;      /* Bright emerald */
+    --accent-gold: #ffd700;         /* Pure gold */
+    --accent-sage: #9caf88;         /* Soft sage */
+    --accent-lime: #32cd32;         /* Lime green */
+    --accent-cream: #f5f5dc;        /* Beige cream */
+    
+    /* Gradients */
+    --bg-primary: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5530 100%);
+    --bg-card: rgba(32, 58, 67, 0.95);
+    --bg-glass: rgba(80, 200, 120, 0.1);
+    --bg-hover: rgba(255, 215, 0, 0.1);
+    
+    /* Text Colors */
+    --text-primary: #f5f5dc;
+    --text-secondary: #9caf88;
+    --text-accent: #50c878;
+    --text-muted: #32cd32;
+    --text-emerald: #50c878;
+    --text-gold: #ffd700;
+    --text-sage: #9caf88;
+    
+    /* Effects */
+    --shadow-soft: 0 4px 25px rgba(80, 200, 120, 0.2);
+    --shadow-medium: 0 8px 35px rgba(255, 215, 0, 0.3);
+    --shadow-strong: 0 15px 45px rgba(156, 175, 136, 0.4);
+    --glow-emerald: 0 0 30px rgba(80, 200, 120, 0.6);
+    --glow-gold: 0 0 30px rgba(255, 215, 0, 0.6);
+    --glow-sage: 0 0 30px rgba(156, 175, 136, 0.6);
+}

@@ -15,10 +15,43 @@
     <link href="{% static "css/blog.css" %}" rel="stylesheet">
     
     <!-- Theme Meta -->
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#6c5ce7">
     <meta name="description" content="{% block meta_description %}PostCraft - A modern, feature-rich blogging platform with advanced UI and seamless user experience.{% endblock %}">
+    
+    <!-- STUNNING SUNSET PARADISE INLINE STYLES -->
+    <style>
+        html, body {
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1b16 50%, #4a2c20 100%) !important;
+            background-attachment: fixed !important;
+            color: #fff8dc !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+        * {
+            color: #ffb085 !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            background: linear-gradient(135deg, #ffd700, #ff6b35) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        a {
+            color: #ffd700 !important;
+            transition: all 0.3s ease !important;
+        }
+        a:hover {
+            color: #ff6b35 !important;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5) !important;
+        }
+        .card, .post-card {
+            background: rgba(45, 27, 22, 0.95) !important;
+            border: 1px solid rgba(255, 215, 0, 0.2) !important;
+            border-radius: 16px !important;
+            backdrop-filter: blur(10px) !important;
+        }
+    </style>
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #1a0e0a 0%, #2d1b16 50%, #4a2c20 100%) !important; background-attachment: fixed !important; color: #fff8dc !important; font-family: 'Inter', sans-serif !important;">
     <!-- Navigation Header -->
     <nav class="navbar">
         <div class="nav-container">

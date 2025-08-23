@@ -54,16 +54,54 @@
     </div>
 
     <div class="post-actions card">
-        <h3><i class="fas fa-share-alt"></i> Share this post</h3>
+        <h3><i class="fas fa-share-alt neon-text"></i> Share this amazing post</h3>
+        <p>Spread the knowledge and inspire others with this incredible content!</p>
+        
         <div class="share-buttons">
-            <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={% url 'blog:post_detail' post.publish.year post.publish.month post.publish.day post.slug %}" target="_blank" class="btn btn-secondary">
+            <a href="{% url 'blog:post_share' post.id %}" class="btn share-btn-email">
+                <i class="fas fa-envelope"></i>
+                <span>Email Share</span>
+            </a>
+            
+            <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}&via=PostCraft" target="_blank" class="btn share-btn-twitter">
                 <i class="fab fa-twitter"></i>
                 <span>Twitter</span>
             </a>
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url={% url 'blog:post_detail' post.publish.year post.publish.month post.publish.day post.slug %}" target="_blank" class="btn btn-secondary">
+            
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="btn share-btn-linkedin">
                 <i class="fab fa-linkedin"></i>
                 <span>LinkedIn</span>
             </a>
+            
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="btn share-btn-facebook">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            
+            <button onclick="copyPostLink()" class="btn share-btn-copy">
+                <i class="fas fa-copy"></i>
+                <span>Copy Link</span>
+            </button>
+            
+            <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri }}{{ post.get_absolute_url }}" target="_blank" class="btn share-btn-whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+        </div>
+        
+        <!-- Quick Email Share Form -->
+        <div class="quick-share-form">
+            <h4><i class="fas fa-rocket"></i> Quick Email Share</h4>
+            <form method="post" action="{% url 'blog:post_share' post.id %}" class="inline-email-form">
+                {% csrf_token %}
+                <div class="quick-form-row">
+                    <input type="email" name="to" placeholder="Enter email address" required class="quick-email-input">
+                    <button type="submit" class="btn btn-neon">
+                        <i class="fas fa-paper-plane"></i>
+                        Send
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -134,5 +172,176 @@
         </div>
     </div>
 </article>
+
+<!-- Scroll to top button -->
+<button class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+// Copy link functionality
+function copyPostLink() {
+    const url = "{{ request.build_absolute_uri }}{{ post.get_absolute_url }}";
+    navigator.clipboard.writeText(url).then(function() {
+        const btn = event.target.closest('.share-btn-copy');
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        btn.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.style.background = '';
+        }, 2000);
+    }, function() {
+        alert('Failed to copy link. Please copy manually: ' + url);
+    });
+}
+
+// Scroll to top functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollTop = document.getElementById('scrollTop');
+    
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollTop.classList.add('visible');
+        } else {
+            scrollTop.classList.remove('visible');
+        }
+    });
+    
+    scrollTop.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Animation on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    });
+    
+    document.querySelectorAll('.card, .comment').forEach(el => {
+        observer.observe(el);
+    });
+});
+</script>
+
+<style>
+.share-btn-email {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.share-btn-twitter {
+    background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);
+}
+
+.share-btn-linkedin {
+    background: linear-gradient(135deg, #0077b5 0%, #005582 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+}
+
+.share-btn-facebook {
+    background: linear-gradient(135deg, #1877f2 0%, #166fe5 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+}
+
+.share-btn-copy {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.share-btn-whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.quick-share-form {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quick-share-form h4 {
+    color: white;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.quick-share-form h4 i {
+    color: var(--neon-orange);
+}
+
+.quick-form-row {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.quick-email-input {
+    flex: 1;
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    color: white;
+    font-size: 1rem;
+}
+
+.quick-email-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.quick-email-input:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.2);
+}
+
+.no-comments {
+    text-align: center;
+    padding: var(--space-8);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.no-comments-icon i {
+    font-size: 3rem;
+    color: var(--neon-blue);
+    margin-bottom: var(--space-4);
+}
+
+.no-comments h4 {
+    color: white;
+    margin-bottom: var(--space-2);
+}
+
+.no-comments p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .share-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+    }
+    
+    .quick-form-row {
+        flex-direction: column;
+    }
+}
+</style>
 
 {% endblock %}

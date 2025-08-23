@@ -6,87 +6,576 @@
 {% block meta_description %}Discover amazing articles on PostCraft - a modern blogging platform featuring the latest insights, tutorials, and stories from our community.{% endblock %}
 
 {% block hero %}
-<div class="hero">
+<div class="hero-section">
+    <div class="hero-background">
+        <div class="hero-particles"></div>
+    </div>
     <div class="hero-content">
-        <h1><i class="fas fa-feather-alt"></i> Welcome to PostCraft</h1>
-        <p>Discover amazing stories, insights, and ideas from our community of writers and creators.</p>
-        {% if tag %}
-            <div class="tag-info">
-                <span class="tag-label">Browsing posts tagged with:</span>
-                <span class="tag-name">"{{ tag.name }}"</span>
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <span class="title-line">Welcome to</span>
+                <span class="title-highlight">PostCraft</span>
+                <span class="title-subtitle">Where Ideas Come to Life</span>
+            </h1>
+            <p class="hero-description">
+                Discover amazing stories, insights, and ideas from our community of writers and creators. 
+                Dive into a world of knowledge, creativity, and inspiration.
+            </p>
+            {% if tag %}
+                <div class="tag-info">
+                    <span class="tag-label">Browsing posts tagged with:</span>
+                    <span class="tag-name">"{{ tag.name }}"</span>
+                </div>
+            {% else %}
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">{% total_posts %}</span>
+                        <span class="stat-label">Articles</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ total_comments|default:0 }}</span>
+                        <span class="stat-label">Comments</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ total_views|default:0 }}</span>
+                        <span class="stat-label">Views</span>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="hero-actions">
+                <a href="{% url "blog:post_search" %}" class="btn btn-hero-primary">
+                    <i class="fas fa-search"></i>
+                    <span>Explore Articles</span>
+                </a>
+                <a href="{% url "blog:post_feed" %}" class="btn btn-hero-secondary">
+                    <i class="fas fa-rss"></i>
+                    <span>Subscribe RSS</span>
+                </a>
             </div>
-        {% endif %}
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="floating-element element-1">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <div class="floating-element element-2">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="floating-element element-3">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="floating-element element-4">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="floating-element element-5">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-<div class="posts-header">
-    {% if tag %}
-        <h2><i class="fas fa-tag"></i> Posts tagged with "{{ tag.name }}"</h2>
-        <p class="posts-subtitle">Exploring articles related to {{ tag.name }}</p>
-    {% else %}
-        <h2><i class="fas fa-newspaper"></i> Latest Articles</h2>
-        <p class="posts-subtitle">Stay updated with our latest content</p>
+<div class="posts-section">
+    <div class="posts-header">
+        {% if tag %}
+            <h2><i class="fas fa-tag neon-text"></i> Posts tagged with "{{ tag.name }}"</h2>
+            <p class="posts-subtitle">Exploring articles related to {{ tag.name }}</p>
+        {% else %}
+            <h2><i class="fas fa-newspaper neon-text"></i> Latest Articles</h2>
+            <p class="posts-subtitle">Stay updated with our latest content and discoveries</p>
+        {% endif %}
+    </div>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            <article class="post-item animate-in animate-in-delay-{{ forloop.counter }}">
+                <div class="post-header">
+                    <h2 class="post-title">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h2>
+                    
+                    <div class="post-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>{{ post.publish|date:"F d, Y" }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ post.body|wordcount|floatformat:0 }} min read</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>{{ post.views|default:0 }} views</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if post.tags.all %}
+                <div class="post-tags">
+                    <i class="fas fa-tags"></i>
+                    {% for tag in post.tags.all %}
+                        <a href="{% url 'blog:post_list_by_tag' tag.slug %}" class="tag">
+                            {{ tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="post-excerpt">
+                    {{ post.body|striptags|truncatewords_html:25 }}
+                </div>
+
+                <div class="post-footer">
+                    <a href="{{ post.get_absolute_url }}" class="read-more">
+                        <span>Read Full Article</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="post-engagement">
+                        <span class="engagement-item">
+                            <i class="fas fa-comments"></i>
+                            {{ post.comments.count }}
+                        </span>
+                        <span class="engagement-item">
+                            <i class="fas fa-heart"></i>
+                            {{ post.likes|default:0 }}
+                        </span>
+                        <span class="engagement-item">
+                            <i class="fas fa-share"></i>
+                            {{ post.shares|default:0 }}
+                        </span>
+                    </div>
+                </div>
+            </article>
+        {% empty %}
+            <div class="no-posts card">
+                <div class="no-posts-icon">
+                    <i class="fas fa-file-alt neon-text"></i>
+                </div>
+                <h3>No posts found</h3>
+                <p>{% if tag %}No posts found with the tag "{{ tag.name }}".{% else %}No posts have been published yet. Check back soon for amazing content!{% endif %}</p>
+                {% if not tag %}
+                    <a href="{% url 'blog:post_list' %}" class="btn">
+                        <i class="fas fa-home"></i>
+                        <span>Go to Homepage</span>
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if posts.has_other_pages %}
+        <div class="pagination-container">
+            {% include "blog/pagination.html" with page=posts %}
+        </div>
     {% endif %}
 </div>
 
-<div class="posts-grid">
-    {% for post in posts %}
-        <article class="card post-card" style="--delay: {{ forloop.counter }}">
-            <div class="post-header">
-                <h2 class="post-title">
-                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                </h2>
-                
-                <div class="post-meta">
-                    <span><i class="fas fa-calendar-alt"></i> {{ post.publish|date:"F d, Y" }}</span>
-                    <span><i class="fas fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}</span>
-                    <span><i class="fas fa-clock"></i> {{ post.body|wordcount|floatformat:0 }} min read</span>
-                </div>
-            </div>
+<style>
+/* Hero Section Styles */
+.hero-section {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: var(--space-16);
+}
 
-            {% if post.tags.all %}
-            <div class="post-tags">
-                {% for tag in post.tags.all %}
-                    <a href="{% url 'blog:post_list_by_tag' tag.slug %}" class="tag">
-                        {{ tag.name }}
-                    </a>
-                {% endfor %}
-            </div>
-            {% endif %}
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
 
-            <div class="post-excerpt">
-                {{ post.body|striptags|truncatewords_html:30 }}
-            </div>
+.hero-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 1px),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.06) 0%, transparent 1px);
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: floatParticles 15s ease-in-out infinite;
+}
 
-            <div class="post-footer">
-                <a href="{{ post.get_absolute_url }}" class="read-more">
-                    <span>Read More</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </article>
-    {% empty %}
-        <div class="no-posts">
-            <div class="no-posts-icon">
-                <i class="fas fa-file-alt"></i>
-            </div>
-            <h3>No posts found</h3>
-            <p>{% if tag %}No posts found with the tag "{{ tag.name }}".{% else %}No posts have been published yet.{% endif %}</p>
-            {% if not tag %}
-                <a href="{% url 'blog:post_list' %}" class="btn">
-                    <i class="fas fa-home"></i>
-                    <span>Go to Homepage</span>
-                </a>
-            {% endif %}
-        </div>
-    {% endfor %}
-</div>
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 var(--space-4);
+    z-index: 1;
+}
 
-<!-- Pagination -->
-{% if posts.has_other_pages %}
-    {% include "blog/pagination.html" with page=posts %}
-{% endif %}
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--space-6);
+    color: white;
+    text-align: left;
+}
+
+.title-line {
+    display: block;
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.title-highlight {
+    display: block;
+    background: var(--neon-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+.title-subtitle {
+    display: block;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    margin-top: var(--space-2);
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--space-8);
+}
+
+.hero-stats {
+    display: flex;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+.stat {
+    text-align: center;
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    min-width: 100px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px currentColor;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    background: var(--neon-gradient);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 20, 147, 0.3);
+    padding: var(--space-4) var(--space-8);
+    font-size: 1.1rem;
+}
+
+.btn-hero-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: var(--space-4) var(--space-8);
+    font-size: 1.1rem;
+}
+
+.hero-visual {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-elements {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.floating-element {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element i {
+    font-size: 2rem;
+    color: var(--neon-blue);
+}
+
+.element-1 {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.element-2 {
+    top: 30%;
+    right: 10%;
+    animation-delay: 1s;
+}
+
+.element-3 {
+    bottom: 40%;
+    left: 10%;
+    animation-delay: 2s;
+}
+
+.element-4 {
+    bottom: 20%;
+    right: 30%;
+    animation-delay: 3s;
+}
+
+.element-5 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 4s;
+    background: var(--neon-gradient);
+    opacity: 0.8;
+}
+
+.element-5 i {
+    color: white;
+}
+
+/* Posts Section */
+.posts-section {
+    padding: var(--space-8) 0;
+}
+
+.posts-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.posts-header h2 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+}
+
+.posts-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.read-more {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--neon-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-all);
+}
+
+.read-more:hover {
+    transform: translateX(5px);
+    color: var(--neon-pink);
+}
+
+.post-engagement {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.engagement-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.engagement-item i {
+    color: var(--neon-blue);
+}
+
+.no-posts {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-16);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.no-posts-icon i {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-12);
+}
+
+/* Tag Info */
+.tag-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+    padding: var(--space-3) var(--space-6);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: fit-content;
+}
+
+.tag-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tag-name {
+    color: var(--neon-pink);
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .posts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--space-6);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .title-line {
+        font-size: 2rem;
+    }
+    
+    .title-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .hero-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+    
+    .posts-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+    
+    .post-footer {
+        flex-direction: column;
+        gap: var(--space-3);
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-visual {
+        height: 300px;
+    }
+    
+    .floating-element {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .floating-element i {
+        font-size: 1.5rem;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+</style>
 
 {% endblock %}

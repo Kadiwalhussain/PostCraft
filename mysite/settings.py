@@ -178,11 +178,15 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
-# Email configuration
+# Email configuration - Enable SMTP for real email sending
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_TIMEOUT = 30
+EMAIL_SSL_KEYFILE = None
+EMAIL_SSL_CERTFILE = None
 EMAIL_HOST_USER = 'colabhussain@gmail.com'
 EMAIL_HOST_PASSWORD = 'oayyyxkslauhqhkz'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
