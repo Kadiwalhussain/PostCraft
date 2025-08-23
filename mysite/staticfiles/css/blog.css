@@ -21,14 +21,14 @@
     --bg-glass: rgba(255, 215, 0, 0.1);
     --bg-hover: rgba(255, 107, 53, 0.1);
     
-    /* Text Colors */
-    --text-primary: #fff8dc;
-    --text-secondary: #ffb085;
-    --text-accent: #ffd700;
-    --text-muted: #ff8e72;
-    --text-gold: #ffd700;
-    --text-orange: #ff6b35;
-    --text-coral: #ff8e72;
+    /* Perfect Text Colors - Much Better Contrast */
+    --text-primary: #ffffff;         /* Pure white for maximum readability */
+    --text-secondary: #f5f5f5;       /* Light gray for body text */
+    --text-accent: #ffd700;          /* Bright gold for links */
+    --text-muted: #cccccc;           /* Light gray for subtle text */
+    --text-gold: #ffd700;            /* Bright gold for headings */
+    --text-orange: #ff6b35;          /* Vibrant orange for accents */
+    --text-coral: #ff8e72;           /* Soft coral for highlights */
     
     /* Effects */
     --shadow-soft: 0 4px 25px rgba(255, 215, 0, 0.2);
@@ -70,7 +70,7 @@
     box-sizing: border-box;
 }
 
-/* BEAUTIFUL BODY */
+/* PERFECT READABLE BODY */
 body {
     font-family: var(--font-primary) !important;
     background: var(--bg-primary) !important;
@@ -79,6 +79,7 @@ body {
     font-size: 16px !important;
     overflow-x: hidden !important;
     position: relative !important;
+    text-shadow: 1px 1px 3px rgba(26, 14, 10, 0.7) !important;
 }
 
 /* Animated Sunset Background */
@@ -135,18 +136,19 @@ h3 {
     text-shadow: var(--glow-coral);
 }
 
-/* BEAUTIFUL PARAGRAPHS */
+/* PERFECT READABLE PARAGRAPHS */
 p {
-    color: var(--text-secondary) !important;
+    color: var(--text-primary) !important;
     margin-bottom: var(--space-md);
     font-weight: 400;
     line-height: 1.7;
-    text-shadow: 1px 1px 2px rgba(26, 14, 10, 0.3);
+    text-shadow: 1px 1px 3px rgba(26, 14, 10, 0.7);
+    font-size: 1rem;
 }
 
-/* WARM LINKS */
+/* BRIGHT READABLE LINKS */
 a {
-    color: var(--accent-gold) !important;
+    color: var(--text-gold) !important;
     text-decoration: none !important;
     transition: var(--transition-smooth) !important;
     position: relative !important;
@@ -591,14 +593,41 @@ input:focus, textarea:focus, select:focus {
     box-shadow: var(--glow-gold) !important;
 }
 
-/* PERFECT TEXT VISIBILITY */
+/* MAXIMUM TEXT VISIBILITY - PERFECT READABILITY */
 .post-content, .post-content *,
 .post-title, .post-title *,
 .blog-content, .blog-content *,
 .header, .header *,
 .main, .main *,
-.content, .content * {
-    color: var(--text-secondary) !important;
+.content, .content *,
+.sidebar, .sidebar *,
+.card, .card *,
+.container, .container * {
+    color: var(--text-primary) !important;
+    text-shadow: 1px 1px 3px rgba(26, 14, 10, 0.8) !important;
+}
+
+/* Specific elements with better colors */
+.sidebar h3, .card h2, .card h3, .card h4 {
+    color: var(--text-gold) !important;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.7) !important;
+}
+
+.sidebar p, .sidebar li, .sidebar span,
+.card p, .card span, .card li {
+    color: var(--text-primary) !important;
+    text-shadow: 1px 1px 3px rgba(26, 14, 10, 0.8) !important;
+}
+
+/* Links with perfect visibility */
+.sidebar a, .card a, .content a {
+    color: var(--text-gold) !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
+}
+
+.sidebar a:hover, .card a:hover, .content a:hover {
+    color: var(--accent-orange) !important;
+    text-shadow: 0 0 15px rgba(255, 107, 53, 0.8) !important;
 }
 
 /* Perfect scroll behavior */
