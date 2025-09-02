@@ -22,6 +22,9 @@ The email functionality is now working correctly. Here's what was fixed:
 
 **File**: `mysite/settings.py`
 ```python
+#updating
+
+
 EMAIL_BACKEND = 'blog.email_backend.FixedSMTPBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
