@@ -13,6 +13,8 @@ The email functionality is now working correctly. Here's what was fixed:
 - Fixed the `starttls()` method compatibility issue
 - Configured Gmail SMTP with proper settings
 
+
+
 ## 🧪 **Test Results**:
 ```
 ✅ Email sent successfully to colabhussain@gmail.com
