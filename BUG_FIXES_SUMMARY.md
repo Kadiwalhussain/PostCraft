@@ -13,6 +13,10 @@
 
 **Configuration**:
 ```python
+
+
+
+
 # Development (current)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
